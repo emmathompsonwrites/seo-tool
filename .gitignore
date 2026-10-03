@@ -1,0 +1,38 @@
+﻿# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.ruff_cache/
+
+# Database
+*.db
+*.db-journal
+*.sqlite
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+Thumbs.db
+.DS_Store
+
+# RankKW reference material (keep local — do NOT push)
+chunks/
+captures/
+spec/
+rankkw-reverse-engineering.md
+
+# Data
+data/
+cache/
+logs/

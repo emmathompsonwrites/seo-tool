@@ -1,0 +1,153 @@
+How to Save This
+Linux/macOS:
+
+bash
+cd /path/to/your/working/dir
+nano rankkw-reverse-engineering.md
+# paste content, save (Ctrl+O, Enter, Ctrl+X)
+Windows (PowerShell):
+
+powershell
+cd C:\your\working\dir
+notepad rankkw-reverse-engineering.md
+# paste content, save
+Or via terminal one-liner (paste the markdown into a heredoc):
+
+bash
+cat > rankkw-reverse-engineering.md << 'EOF'
+<paste content here>
+EOF
+Recommended File Structure Going Forward
+text
+your-working-dir/
+├── rankkw-reverse-engineering.md   ← this file
+├── openapi.yaml                    ← (to be generated)
+├── chunks/                         ← prettified JS bundles
+│   ├── 3gu6vcyeqxf4-.js
+│   ├── 1ucuirs1qrpvj.js
+│   ├── 3h4iylgj-2w1i.js
+│   ├── 37p64ygqo4xbd.js
+│   ├── 1v9j26xlm2hey.js           ← (to download)
+│   └── 21wyi_9xjuptf.js           ← (to download)
+├── captures/                       ← JSON response bodies
+│   ├── keywords.json
+│   ├── related.json
+│   ├── ideas.json
+│   ├── near-matches.json
+│   ├── trends.json
+│   ├── market-history.json
+│   ├── rank-movers.json
+│   ├── alerts.json
+│   └── fx.json
+└── spec/                           ← clone's schema/spec
+    ├── schema.sql
+    └── api-routes.md
+Once you've saved this file, tell me what's next:
+
+Paste /llms.txt → I map all remaining features
+
+Paste the two auth chunks → I extract form validation + endpoint strings
+
+Tell me your stack → I generate the actual backend repo
+What you just sent (compressed)
+1. Alerts / Announcements API — new endpoint discovered
+text
+GET /api/alerts  (or similar — you fetched it from dashboard)
+Response shape (inbox-style):
+
+json
+{
+  "success": true,
+  "data": {
+    "items": [{
+      "id": "6abebc35a8e574db2adaaac7",
+      "type": "chat" | "info",
+      "title": "Message from Rankkw",
+      "body": "...",
+      "link": null,
+      "audience": "all",
+      "createdAt": "2026-10-01T20:01:57.348Z",
+      "read": false
+    }],
+    "unread": 7,
+    "hasMore": false
+  }
+}
+Business intel extracted:
+
+$49.99 one-time plan live until Oct 5, 2026
+
+SEBT plan (7-day trial → Enterprise → auto-downgrade to Free)
+
+Rankkw Chrome Extension is live on Chrome Web Store
+
+Automation features coming "in the coming weeks"
+
+Their server had issues ~Sep 17 (they told users to wait 2-3 hours)
+
+2. Lottie animations (Lordicon) — 8 files
+These are Lordicon-branded Lottie JSONs used as UI icons:
+
+Animation	Icon	Used for
+112-book-morph-outline	Book	Blog / docs
+wired-outline-63-home	Home	Dashboard nav
+system-regular-46-notification-bell	Bell	Alerts
+wired-outline-955-demand	Trending	Market demand
+system-regular-42-search	Search	Keyword search
+298-coins-outline	Coins	Credits
+(2 duplicates)		
+Two color themes baked in:
+
+#3D3E3B (charcoal) = primary
+
+#FB5E09 (orange) = secondary/accent
+
+Important: These are licensed Lordicon assets. Don't copy them into your clone — sign up on lordicon.com and get your own license, or use free alternatives (Lucide, Heroicons).
+
+3. New route discovered
+text
+/methodology  ← public page, prefetched from somewhere
+{"children":{"name":"methodology"...}} — confirms a "Methodology" page exists (likely documents how they calculate difficulty/competition). Worth fetching — it will reveal their scoring formula in plain English.
+
+Chat Conservation Strategy
+We've burned a lot of context on JSON blobs. Let's switch modes:
+
+Rule going forward
+Don't paste full Lottie/animation JSONs — just say "animation X, name Y" and I'll note it
+
+For API responses, paste only the top-level shape, or truncate arrays to 1–2 items + "..."
+
+For JS chunks, paste only the prettified snippets you care about (search for /api/, z.object(, etc.)
+
+Save everything locally to .md files as we go (you already have the master notes file)
+
+Priority list for next captures (in order)
+#	Target	Why	Effort
+1	GET /llms.txt	Full feature map, one file	1 curl
+2	GET /sitemap.xml	All public routes	1 curl
+3	GET /methodology	Scoring formula revealed	1 fetch
+4	POST /api/auth/register	Signup contract	1 signup
+5	POST /api/auth/refresh	Refresh flow	wait 15min
+6	POST /api/auth/logout	Logout flow	1 click
+7	Other dashboard tabs	Products/Competitors/Optimizer endpoints	click around
+8	GET /api/plans or /pricing HTML	Plan tiers, prices	1 fetch
+9	POST /api/alerts/:id/read	Mark-as-read endpoint	1 click
+10	/api/popup-ad	Marketing popup data	1 fetch
+Recommended Next Action
+Fetch these 3 in one go (they're tiny and unauthenticated):
+
+bash
+curl https://rankkw.com/llms.txt
+curl https://rankkw.com/sitemap.xml
+curl https://rankkw.com/methodology  # (or the RSC endpoint)
+Paste the outputs (or just /llms.txt if you only do one). That single file typically lists every tool, route, and feature — which lets me generate your complete backend scaffold in one shot.
+
+If you're low on patience for this recon phase, alternative: tell me your stack (Node? Next? Postgres? Railway?) and I'll start generating the backend from what we already know — we have ~90% of the keyword tool mapped.
+
+Which do you want?
+
+Paste /llms.txt → I map remaining features
+
+Tell me your stack → I start writing code
+
+Save current state → you take a break, resume later
